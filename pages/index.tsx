@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import { Button } from '@chakra-ui/react'
-import { useStore } from 'react-redux'
 import { useAuth } from 'hooks/useAuth'
 
 const Home: NextPage = () => {

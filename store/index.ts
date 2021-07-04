@@ -17,10 +17,10 @@ const rootReducer = (state: RootState, action: AnyAction) => {
   }
 }
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof reducers>
 
 export const makeStore = () =>
-  configureStore({
+  configureStore<ReturnType<typeof rootReducer>>({
     reducer: rootReducer,
   })
 
