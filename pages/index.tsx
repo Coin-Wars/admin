@@ -1,12 +1,12 @@
-import styled from 'styled-components'
+import { NextPage } from 'next'
+import { Button } from '@chakra-ui/react'
+import { useStore } from 'react-redux'
+import { useAuth } from 'hooks/useAuth'
 
-export default function Home() {
-  return <Header>hello world!</Header>
+const Home: NextPage = () => {
+  const { isLogged } = useAuth()
+
+  return <Button>is logged - {String(isLogged)}</Button>
 }
 
-const Header = styled.div`
-  margin: 50px;
-  padding: 100px;
-  background: blue;
-  color: red;
-`
+export default Home
