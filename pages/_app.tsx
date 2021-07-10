@@ -1,20 +1,22 @@
 import type { AppContext, AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
-import { UnauthorizedLayout } from 'components/layouts/UnauthorizedLayout'
 import Cookies from 'js-cookie'
 import { wrapper } from 'store'
 import { verifyToken } from 'store/user/actions'
 import { actions as userActions } from 'store/user'
-import { useAuth } from 'hooks/useAuth'
 import { parseCookie } from 'utils/parseCookie'
+import { DefaultSeo } from 'next-seo'
+import { Navbar } from 'components/common/Navbar'
 import 'styles/index.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-  <ChakraProvider>
-    <UnauthorizedLayout>
+  <>
+    <DefaultSeo titleTemplate="%s | Storegram" defaultTitle="Storegram" />
+    <ChakraProvider>
+      <Navbar />
       <Component {...pageProps} />
-    </UnauthorizedLayout>
-  </ChakraProvider>
+    </ChakraProvider>
+  </>
 )
 
 MyApp.getInitialProps = wrapper.getInitialAppProps(
