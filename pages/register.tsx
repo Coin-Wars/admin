@@ -2,19 +2,16 @@ import { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import { AuthorizationLayout } from 'components/layouts/AuthorizationLayout'
 import { useAuth } from 'hooks/useAuth'
-import { LoginForm } from 'components/forms/LoginForm'
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   const { isLogged } = useAuth()
 
   return (
     <>
-      <NextSeo title="Вход" />
-      <AuthorizationLayout>
-        <LoginForm />
-      </AuthorizationLayout>
+      <NextSeo title="Регистрация" />
+      <AuthorizationLayout>register page!</AuthorizationLayout>
     </>
   )
 }
 
-export default Login
+export default Register

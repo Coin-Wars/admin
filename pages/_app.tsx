@@ -1,5 +1,5 @@
 import type { AppContext, AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, CSSReset } from '@chakra-ui/react'
 import Cookies from 'js-cookie'
 import { wrapper } from 'store'
 import { verifyToken } from 'store/user/actions'
@@ -13,6 +13,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
   <>
     <DefaultSeo titleTemplate="%s | Storegram" defaultTitle="Storegram" />
     <ChakraProvider>
+      <CSSReset />
       <Navbar />
       <Component {...pageProps} />
     </ChakraProvider>

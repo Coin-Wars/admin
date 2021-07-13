@@ -1,16 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Container, Center, Box } from '@chakra-ui/react'
+import { Container, Center, Flex, useColorModeValue } from '@chakra-ui/react'
 
 export const AuthorizationLayout: React.FC = ({ children }) => (
-  <BackgroundContainer>
+  <Flex
+    minH={'100vh'}
+    align={'center'}
+    justify={'center'}
+    bg={useColorModeValue('gray.50', 'gray.800')}
+  >
     <Container maxW="container.xl">
       <Center>{children}</Center>
     </Container>
-  </BackgroundContainer>
+  </Flex>
 )
-
-const BackgroundContainer = styled(Box)`
-  background: white;
-  min-height: 100vh;
-`
