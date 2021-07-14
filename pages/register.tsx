@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import { AuthorizationLayout } from 'components/layouts/AuthorizationLayout'
 import { useAuth } from 'hooks/useAuth'
+import { RegisterForm } from 'components/forms/RegisterForm'
 
 const Register: NextPage = () => {
   const { isLogged } = useAuth()
@@ -9,7 +10,9 @@ const Register: NextPage = () => {
   return (
     <>
       <NextSeo title="Регистрация" />
-      <AuthorizationLayout>register page!</AuthorizationLayout>
+      <AuthorizationLayout>
+        <RegisterForm />
+      </AuthorizationLayout>
     </>
   )
 }

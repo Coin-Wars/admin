@@ -8,7 +8,7 @@ export const AuthorizationLayout: React.FC = ({ children }) => (
     justify={'center'}
     bg={useColorModeValue('gray.50', 'gray.800')}
   >
-    <Container maxW="container.xl">
+    <Container maxW="container.sm">
       <Center>{children}</Center>
     </Container>
   </Flex>

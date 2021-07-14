@@ -7,6 +7,7 @@ import { actions as userActions } from 'store/user'
 import { parseCookie } from 'utils/parseCookie'
 import { DefaultSeo } from 'next-seo'
 import { Navbar } from 'components/common/Navbar'
+import { createAxiosInterceptors } from 'services/api'
 import 'styles/index.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
@@ -33,6 +34,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
 
       if (accessToken) {
         await store.dispatch(verifyToken(accessToken))
+        createAxiosInterceptors(store)
       } else {
         store.dispatch(userActions.resetAuth())
       }

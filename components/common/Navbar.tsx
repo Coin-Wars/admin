@@ -98,7 +98,7 @@ export const Navbar: React.VFC = () => {
               fontSize={'sm'}
               fontWeight={600}
             >
-              Зарегистрироваться
+              Регистрация
             </Button>
           </RouterLink>
         </Stack>

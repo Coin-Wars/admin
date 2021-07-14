@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { verifyToken } from 'services/api/auth'
+import { getCurrentUser } from 'services/api/auth'
+import { useAuth } from 'hooks/useAuth'
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
+    const { tokens } = useAuth()
     const Router = useRouter()
     const [verified, setVerified] = useState(false)
 
     useEffect(() => {
-      const accessToken = localStorage.getItem('accessToken')
-
-      if (!accessToken) {
+      if (!tokens.access) {
         Router.replace('/')
       } else {
-        verifyToken(accessToken).then((data) => {
+        getCurrentUser().then((data) => {
           if (data) {
-            setVerified(data)
-          } else {
-            localStorage.removeItem('accessToken')
-            Router.replace('/')
+            setVerified(true)
           }
         })
       }
