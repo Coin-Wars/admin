@@ -12,15 +12,19 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { LoginData } from 'services/models'
+import { useAuth } from 'hooks/useAuth'
+import { useRouter } from 'next/router'
 
 export const LoginForm: React.VFC = () => {
+  const { login } = useAuth()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<LoginData>()
 
-  const onSubmit = (data: LoginData) => console.log(data)
+  const onSubmit = (data: LoginData) => login(data).then(() => router.push('/'))
 
   return (
     <Box w="100%">

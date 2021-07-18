@@ -11,16 +11,100 @@ import {
   useBreakpointValue,
   Text,
   Button,
+  HStack,
+  Menu,
+  MenuButton,
+  Avatar,
+  MenuItem,
+  MenuDivider,
+  VStack,
+  MenuList,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { zIndexes } from 'assets/styles/variables'
+import { useAuth } from 'hooks/useAuth'
+import { BiChevronDown, BiMenu } from 'react-icons/bi'
 
 export const Navbar: React.VFC = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200')
   const linkHoverColor = useColorModeValue('gray.800', 'white')
   const { isOpen, onToggle } = useDisclosure()
+  const { isLogged } = useAuth()
 
-  return (
+  return isLogged ? (
+    <Flex
+      zIndex={zIndexes.navbar}
+      ml={{ base: 0, md: 60 }}
+      px={{ base: 4, md: 4 }}
+      height="20"
+      alignItems="center"
+      bg={useColorModeValue('white', 'gray.900')}
+      borderBottomWidth="1px"
+      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+      justifyContent={{ base: 'space-between', md: 'flex-end' }}
+    >
+      <IconButton
+        display={{ base: 'flex', md: 'none' }}
+        variant="outline"
+        aria-label="open menu"
+        icon={<BiMenu />}
+      />
+
+      <Text
+        display={{ base: 'flex', md: 'none' }}
+        fontSize="2xl"
+        fontFamily="monospace"
+        fontWeight="bold"
+      >
+        Logo
+      </Text>
+
+      <HStack spacing={{ base: '0', md: '6' }}>
+        <Flex alignItems={'center'}>
+          <Menu>
+            <MenuButton
+              py={2}
+              transition="all 0.3s"
+              _focus={{ boxShadow: 'none' }}
+            >
+              <HStack>
+                <Avatar
+                  size={'sm'}
+                  src={
+                    'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                  }
+                />
+                <VStack
+                  display={{ base: 'none', md: 'flex' }}
+                  alignItems="flex-start"
+                  spacing="1px"
+                  ml="2"
+                >
+                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="xs" color="gray.600">
+                    Admin
+                  </Text>
+                </VStack>
+                <Box display={{ base: 'none', md: 'flex' }}>
+                  <BiChevronDown />
+                </Box>
+              </HStack>
+            </MenuButton>
+            <MenuList
+              bg={useColorModeValue('white', 'gray.900')}
+              borderColor={useColorModeValue('gray.200', 'gray.700')}
+            >
+              <MenuItem>Profile</MenuItem>
+              <MenuItem>Settings</MenuItem>
+              <MenuItem>Billing</MenuItem>
+              <MenuDivider />
+              <MenuItem>Sign out</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+      </HStack>
+    </Flex>
+  ) : (
     <Box position="fixed" top={0} left={0} w="100%" zIndex={zIndexes.navbar}>
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
@@ -80,7 +164,6 @@ export const Navbar: React.VFC = () => {
             </Stack>
           </Flex>
         </Flex>
-
         <Stack
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}

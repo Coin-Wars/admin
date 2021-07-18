@@ -1,6 +1,7 @@
 import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import { reducer as userSliceReducer } from './user'
+import { useDispatch } from 'react-redux'
 
 const reducers = combineReducers({
   user: userSliceReducer,
@@ -25,3 +26,9 @@ export const makeStore = () =>
   })
 
 export const wrapper = createWrapper<ReturnType<typeof makeStore>>(makeStore)
+
+type storeType = ReturnType<typeof makeStore>
+
+export type AppDispatch = storeType['dispatch']
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()

@@ -8,15 +8,15 @@ import {
 import { axios } from './index'
 
 export const register = (data: RegisterData) =>
-  axios.post<RegisterData, User>('users/', data)
+  axios.post<User>('users/', data).then((res) => res.data)
 export const updateUser = (data: UserUpdate) =>
-  axios.patch<UserUpdate, User>('users/', data)
-export const getCurrentUser = () => axios.get<unknown, User>('users/me/')
+  axios.patch<User>('users/', data).then((res) => res.data)
+export const getCurrentUser = () =>
+  axios.get<User>('users/me/').then((res) => res.data)
 
 export const getTokens = (data: LoginData) =>
-  axios.post<LoginData, Tokens>('users/token/', data)
+  axios.post<Tokens>('users/token/', data).then((res) => res.data)
 export const refreshToken = (refresh: Tokens['refresh']) =>
-  axios.post<Tokens['refresh'], Omit<Tokens, 'refresh'>>(
-    'users/token/refresh/',
-    { refresh }
-  )
+  axios
+    .post<Omit<Tokens, 'refresh'>>('users/token/refresh/', { refresh })
+    .then((res) => res.data)

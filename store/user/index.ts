@@ -48,9 +48,15 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(reenter.fulfilled, userSlice.caseReducers.setAuth)
-      .addCase(getCurrentUser.fulfilled, userSlice.caseReducers.setInfo)
-      .addCase(logout.fulfilled, userSlice.caseReducers.reset)
+      .addCase(reenter.fulfilled, (state, action) =>
+        userSlice.caseReducers.setAuth(state, action)
+      )
+      .addCase(getCurrentUser.fulfilled, (state, action) =>
+        userSlice.caseReducers.setInfo(state, action)
+      )
+      .addCase(logout.fulfilled, (state, action) =>
+        userSlice.caseReducers.reset(state, action)
+      )
   },
 })
 

@@ -13,15 +13,20 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { RegisterData } from 'services/models'
+import { useAuth } from 'hooks/useAuth'
+import { useRouter } from 'next/router'
 
 export const RegisterForm: React.VFC = () => {
+  const { register: registerAction } = useAuth()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<RegisterData>()
 
-  const onSubmit = (data: RegisterData) => console.log(data)
+  const onSubmit = (data: RegisterData) =>
+    registerAction(data).then(() => router.push('/login'))
 
   return (
     <Box w="100%">

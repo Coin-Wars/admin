@@ -3,6 +3,7 @@ import { NextSeo } from 'next-seo'
 import { AuthorizationLayout } from 'components/layouts/AuthorizationLayout'
 import { useAuth } from 'hooks/useAuth'
 import { LoginForm } from 'components/forms/LoginForm'
+import { withUnAuth } from 'hocs/withUnauth'
 
 const Login: NextPage = () => {
   const { isLogged } = useAuth()
@@ -17,4 +18,4 @@ const Login: NextPage = () => {
   )
 }
 
-export default Login
+export default withUnAuth(Login)
