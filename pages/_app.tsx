@@ -1,14 +1,11 @@
 import type { AppContext, AppProps } from 'next/app'
 import { ChakraProvider, CSSReset } from '@chakra-ui/react'
-import Cookies from 'js-cookie'
+import nookie from 'nookies'
 import { wrapper } from 'store'
-import { getCurrentUser } from 'store/user/actions'
-import { parseCookie } from 'utils/parseCookie'
+import { getCurrentUser, logout } from 'store/user/actions'
 import { DefaultSeo } from 'next-seo'
-import { Navbar } from 'components/common/Navbar'
 import { createAxiosInterceptors } from 'services/api'
 import { actions as userActions } from 'store/user'
-import { tokensSelector } from 'store/user/selectors'
 import { BaseLayout } from 'components/layouts/BaseLayout'
 import 'styles/index.scss'
 
@@ -18,7 +15,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <ChakraProvider>
       <CSSReset />
       <BaseLayout>
-        <Navbar />
         <Component {...pageProps} />
       </BaseLayout>
     </ChakraProvider>
@@ -30,18 +26,20 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
     async ({ Component, ctx }: AppContext) => {
       let access, refresh
 
-      if (ctx.req?.headers.cookie) {
-        access = parseCookie(ctx.req.headers.cookie)['access_token']
-        refresh = parseCookie(ctx.req.headers.cookie)['refresh_token']
-      } else {
-        access = Cookies.get('access_token')
-        refresh = Cookies.get('refresh_token')
-      }
+      access = nookie.get(ctx)['access_token']
+      refresh = nookie.get(ctx)['refresh_token']
 
-      if (access && refresh) {
+      if (access) {
         store.dispatch(userActions.setAuth({ access, refresh }))
-        createAxiosInterceptors(tokensSelector(store.getState()))
-        await store.dispatch(getCurrentUser())
+        createAxiosInterceptors(store)
+
+        try {
+          await store.dispatch(getCurrentUser())
+        } catch (e) {
+          nookie.destroy(ctx, 'access_token')
+          nookie.destroy(ctx, 'refresh_token')
+          store.dispatch(userActions.resetAuth())
+        }
       } else {
         store.dispatch(userActions.resetAuth())
       }

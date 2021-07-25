@@ -9,8 +9,9 @@ export function withUnAuth<T>(WrappedComponent: React.ComponentType<T>) {
     const [verified, setVerified] = useState(false)
 
     useEffect(() => {
+      console.log(tokens)
       if (tokens.access) {
-        Router.replace('/')
+        Router.replace('/panel')
       } else {
         setVerified(true)
       }

@@ -1,8 +1,9 @@
-import Cookies from 'js-cookie'
+import nookie from 'nookies'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as authApi from 'services/api/auth'
 import { LoginData, RegisterData, Tokens, User } from 'services/models'
 import Router from 'next/router'
+import { actions as userActions } from './index'
 
 export const getCurrentUser = createAsyncThunk<
   ReturnType<typeof authApi.getCurrentUser>
@@ -18,16 +19,18 @@ export const login = createAsyncThunk<Promise<Tokens>, LoginData>(
   async (data) => {
     const { access, refresh } = await authApi.getTokens(data)
 
-    Cookies.set('access_token', access)
-    Cookies.set('refresh_token', refresh)
+    nookie.set(null, 'access_token', access)
+    nookie.set(null, 'refresh_token', refresh)
 
     return { access, refresh }
   }
 )
 
-export const logout = createAsyncThunk('user/logout', () => {
-  Cookies.remove('access_token')
-  Cookies.remove('refresh_token')
+export const logout = createAsyncThunk('user/logout', (_, thunkAPI) => {
+  nookie.destroy(null, 'access_token')
+  nookie.destroy(null, 'refresh_token')
+
+  thunkAPI.dispatch(userActions.resetAuth())
   Router.push('/')
 })
 
@@ -36,6 +39,6 @@ export const reenter = createAsyncThunk<
   Omit<Tokens, 'access'>
 >('user/reenter', async ({ refresh }) => {
   const { access } = await authApi.refreshToken(refresh)
-  Cookies.set('access_token', access)
+  nookie.set(null, 'access_token', access)
   return { access, refresh }
 })

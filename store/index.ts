@@ -27,7 +27,7 @@ export const makeStore = () =>
 
 export const wrapper = createWrapper<ReturnType<typeof makeStore>>(makeStore)
 
-type storeType = ReturnType<typeof makeStore>
+export type storeType = ReturnType<typeof makeStore>
 
 export type AppDispatch = storeType['dispatch']
 

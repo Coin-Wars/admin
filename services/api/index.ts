@@ -1,6 +1,7 @@
 import { default as axiosClient } from 'axios'
 import { logout, reenter } from 'store/user/actions'
-import { UserAuthState } from 'store/user'
+import { storeType } from 'store'
+import { tokensSelector } from 'store/user/selectors'
 
 export const axios = axiosClient.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -11,8 +12,8 @@ export const axios = axiosClient.create({
   },
 })
 
-export const createAxiosInterceptors = (tokens: UserAuthState) => {
-  const { access, refresh } = tokens
+export const createAxiosInterceptors = (store: storeType) => {
+  const { access, refresh } = tokensSelector(store.getState())
 
   const interceptor = axios.interceptors.response.use(
     (response) => Promise.resolve(response),
@@ -28,14 +29,16 @@ export const createAxiosInterceptors = (tokens: UserAuthState) => {
           throw new Error(error)
         }
 
-        const access = await reenter({ refresh })
+        await store.dispatch(reenter({ refresh }))
+        const { access } = tokensSelector(store.getState())
+
         error.response.config.headers.Authorization = `Bearer ${access}`
-        return axios.request(error.response.config)
+        await axios.request(error.response.config)
       } catch (err) {
-        logout()
+        store.dispatch(logout())
         throw new Error(error)
       } finally {
-        createAxiosInterceptors({ access, refresh })
+        createAxiosInterceptors(store)
       }
     }
   )
