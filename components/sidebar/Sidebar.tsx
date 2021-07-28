@@ -20,6 +20,7 @@ export const Sidebar: React.VFC<SidebarProps> = ({ ...rest }) => (
     borderRightColor={useColorModeValue('gray.200', 'gray.700')}
     w={{ base: 'full', md: 60 }}
     pos="fixed"
+    top={0}
     h="full"
     {...rest}
   >

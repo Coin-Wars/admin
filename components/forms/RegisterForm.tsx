@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form'
 import { RegisterData } from 'services/models'
 import { useAuth } from 'hooks/useAuth'
 import { useRouter } from 'next/router'
+import { routes } from 'resources/routes'
 
 export const RegisterForm: React.VFC = () => {
   const { register: registerAction } = useAuth()
@@ -26,7 +27,7 @@ export const RegisterForm: React.VFC = () => {
   } = useForm<RegisterData>()
 
   const onSubmit = (data: RegisterData) =>
-    registerAction(data).then(() => router.push('/login'))
+    registerAction(data).then(() => router.push(routes.login.name))
 
   return (
     <Box w="100%">

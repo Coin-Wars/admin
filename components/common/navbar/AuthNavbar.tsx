@@ -16,8 +16,11 @@ import {
 } from '@chakra-ui/react'
 import { zIndexes } from 'assets/styles/variables'
 import { BiChevronDown, BiMenu } from 'react-icons/bi'
+import { useAuth } from 'hooks/useAuth'
 
 export const AuthNavbar: React.VFC = () => {
+  const { nickname } = useAuth()
+
   return (
     <Flex
       zIndex={zIndexes.navbar}
@@ -67,10 +70,7 @@ export const AuthNavbar: React.VFC = () => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
+                  <Text fontSize="sm">{nickname}</Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <BiChevronDown />

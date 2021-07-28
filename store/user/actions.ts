@@ -4,6 +4,7 @@ import * as authApi from 'services/api/auth'
 import { LoginData, RegisterData, Tokens, User } from 'services/models'
 import Router from 'next/router'
 import { actions as userActions } from './index'
+import { routes } from 'resources/routes'
 
 export const getCurrentUser = createAsyncThunk<
   ReturnType<typeof authApi.getCurrentUser>
@@ -31,7 +32,7 @@ export const logout = createAsyncThunk('user/logout', (_, thunkAPI) => {
   nookie.destroy(null, 'refresh_token')
 
   thunkAPI.dispatch(userActions.resetAuth())
-  Router.push('/')
+  Router.push(routes.main.path)
 })
 
 export const reenter = createAsyncThunk<

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useAuth } from 'hooks/useAuth'
+import { routes } from 'resources/routes'
 
 export function withUnAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
@@ -9,9 +10,8 @@ export function withUnAuth<T>(WrappedComponent: React.ComponentType<T>) {
     const [verified, setVerified] = useState(false)
 
     useEffect(() => {
-      console.log(tokens)
       if (tokens.access) {
-        Router.replace('/panel')
+        Router.replace(routes.panel.path)
       } else {
         setVerified(true)
       }

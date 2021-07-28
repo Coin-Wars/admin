@@ -1,5 +1,10 @@
 import { useSelector } from 'react-redux'
-import { isLoggedSelector, tokensSelector } from 'store/user/selectors'
+import {
+  isLoggedSelector,
+  tokensSelector,
+  infoSelector,
+  nicknameSelector,
+} from 'store/user/selectors'
 import {
   login,
   reenter,
@@ -16,6 +21,8 @@ export const useAuth = () => {
   return {
     isLogged: useSelector(isLoggedSelector),
     tokens: useSelector(tokensSelector),
+    userInfo: useSelector(infoSelector),
+    nickname: useSelector(nicknameSelector),
     login: (data: LoginData) => dispatch(login(data)).unwrap(),
     reenter: (refresh: Tokens['refresh']) =>
       dispatch(reenter({ refresh })).unwrap(),

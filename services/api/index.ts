@@ -15,6 +15,8 @@ export const axios = axiosClient.create({
 export const createAxiosInterceptors = (store: storeType) => {
   const { access, refresh } = tokensSelector(store.getState())
 
+  console.log(access)
+
   const interceptor = axios.interceptors.response.use(
     (response) => Promise.resolve(response),
     async (error) => {

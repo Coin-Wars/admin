@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import { LoginData } from 'services/models'
 import { useAuth } from 'hooks/useAuth'
 import { useRouter } from 'next/router'
+import { routes } from 'resources/routes'
 
 export const LoginForm: React.VFC = () => {
   const { login } = useAuth()
@@ -24,7 +25,8 @@ export const LoginForm: React.VFC = () => {
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<LoginData>()
 
-  const onSubmit = (data: LoginData) => login(data).then(() => router.push('/'))
+  const onSubmit = (data: LoginData) =>
+    login(data).then(() => router.push(routes.main.path))
 
   return (
     <Box w="100%">
