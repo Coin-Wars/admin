@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { zIndexes } from 'assets/styles/variables'
+import { routes } from 'resources/routes'
 
 export const UnauthNavbar: React.VFC = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200')
@@ -48,7 +49,7 @@ export const UnauthNavbar: React.VFC = () => {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <RouterLink href="/">
+          <RouterLink href={routes.main.path}>
             <Text
               textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
               fontFamily={'heading'}
@@ -62,7 +63,7 @@ export const UnauthNavbar: React.VFC = () => {
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <Stack direction={'row'} spacing={4}>
               <Box>
-                <RouterLink href="/" passHref>
+                <RouterLink href={routes.main.path} passHref>
                   <Link
                     p={2}
                     fontSize={'sm'}
@@ -86,12 +87,12 @@ export const UnauthNavbar: React.VFC = () => {
           direction={'row'}
           spacing={6}
         >
-          <RouterLink href="/login">
+          <RouterLink href={routes.login.path}>
             <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'}>
               Войти
             </Button>
           </RouterLink>
-          <RouterLink href="/register">
+          <RouterLink href={routes.register.path}>
             <Button
               display={{ base: 'none', md: 'inline-flex' }}
               fontSize={'sm'}

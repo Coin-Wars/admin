@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { SidebarLink } from './SidebarLink'
 import { BiHome, BiStore } from 'react-icons/bi'
+import { sidebarLinks } from 'resources/sidebarLinks'
 
 interface SidebarProps extends BoxProps {}
 
@@ -30,7 +31,10 @@ export const Sidebar: React.VFC<SidebarProps> = ({ ...rest }) => (
       </Text>
       <CloseButton display={{ base: 'flex', md: 'none' }} />
     </Flex>
-    <SidebarLink icon={BiHome}>Главная</SidebarLink>
-    <SidebarLink icon={BiStore}>Создать магазин</SidebarLink>
+    {sidebarLinks.map((link) => (
+      <SidebarLink link={link.path} key={link.path} icon={link.icon}>
+        {link.name}
+      </SidebarLink>
+    ))}
   </Box>
 )

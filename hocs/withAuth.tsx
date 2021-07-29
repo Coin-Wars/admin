@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { getCurrentUser } from 'services/api/auth'
 import { useAuth } from 'hooks/useAuth'
 import { routes } from 'resources/routes'
+import { createAxiosInterceptors } from 'services/api'
+import { useStore } from 'react-redux'
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
-    const { tokens } = useAuth()
+    const { tokens, getCurrentUser } = useAuth()
+    const store = useStore()
     const Router = useRouter()
     const [verified, setVerified] = useState(false)
 
@@ -14,10 +16,9 @@ export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
       if (!tokens.access) {
         Router.replace(routes.main.path)
       } else {
-        getCurrentUser().then((data) => {
-          if (data) {
-            setVerified(true)
-          }
+        createAxiosInterceptors(store)
+        getCurrentUser().then(() => {
+          setVerified(true)
         })
       }
     }, [])

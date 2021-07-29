@@ -31,9 +31,9 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
 
       if (access) {
         store.dispatch(userActions.setAuth({ access, refresh }))
-        createAxiosInterceptors(store)
 
         try {
+          createAxiosInterceptors(store)
           await store.dispatch(getCurrentUser())
         } catch (e) {
           nookie.destroy(ctx, 'access_token')

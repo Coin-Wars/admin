@@ -27,7 +27,7 @@ export const RegisterForm: React.VFC = () => {
   } = useForm<RegisterData>()
 
   const onSubmit = (data: RegisterData) =>
-    registerAction(data).then(() => router.push(routes.login.name))
+    registerAction(data).then(() => router.push(routes.login.path))
 
   return (
     <Box w="100%">

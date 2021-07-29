@@ -15,11 +15,13 @@ import {
   MenuList,
 } from '@chakra-ui/react'
 import { zIndexes } from 'assets/styles/variables'
-import { BiChevronDown, BiMenu } from 'react-icons/bi'
+import { BiChevronDown, BiMenu, BiUserCircle } from 'react-icons/bi'
 import { useAuth } from 'hooks/useAuth'
+import RouterLink from 'next/link'
+import { routes } from 'resources/routes'
 
 export const AuthNavbar: React.VFC = () => {
-  const { nickname } = useAuth()
+  const { nickname, logout } = useAuth()
 
   return (
     <Flex
@@ -59,10 +61,9 @@ export const AuthNavbar: React.VFC = () => {
             >
               <HStack>
                 <Avatar
+                  bg="white"
                   size={'sm'}
-                  src={
-                    'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                  }
+                  icon={<BiUserCircle fontSize="1.5rem" />}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
@@ -81,11 +82,11 @@ export const AuthNavbar: React.VFC = () => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              <RouterLink href={routes.settings.path}>
+                <MenuItem>Настройки</MenuItem>
+              </RouterLink>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={logout}>Выход</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

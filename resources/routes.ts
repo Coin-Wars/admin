@@ -19,4 +19,8 @@ export const routes = {
     name: 'Создать магазин',
     path: '/create-store',
   },
+  settings: {
+    name: 'Настройки',
+    path: '/settings',
+  },
 }
