@@ -8,7 +8,6 @@ import {
   BoxProps,
 } from '@chakra-ui/react'
 import { SidebarLink } from './SidebarLink'
-import { BiHome, BiStore } from 'react-icons/bi'
 import { sidebarLinks } from 'resources/sidebarLinks'
 
 interface SidebarProps extends BoxProps {}
