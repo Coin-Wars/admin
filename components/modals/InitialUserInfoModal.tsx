@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDisclosure } from '@chakra-ui/hooks'
 import {
   Button,
@@ -23,10 +23,6 @@ export const InitialUserInfoModal: React.VFC<InitialUserInfoModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  useEffect(() => {
-    localStorage.setItem('user_info_filled', '1')
-  }, [])
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

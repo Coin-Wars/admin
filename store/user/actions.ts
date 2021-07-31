@@ -1,14 +1,22 @@
 import nookie from 'nookies'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as authApi from 'services/api/auth'
-import { LoginData, RegisterData, Tokens, User } from 'services/models'
+import * as userApi from 'services/api/user'
+import {
+  LoginData,
+  RegisterData,
+  Tokens,
+  User,
+  UserUpdateData,
+} from 'services/models'
 import Router from 'next/router'
 import { actions as userActions } from './index'
 import { routes } from 'resources/routes'
+import { infoSelector } from './selectors'
 
 export const getCurrentUser = createAsyncThunk<
-  ReturnType<typeof authApi.getCurrentUser>
->('user/getCurrentUser', authApi.getCurrentUser)
+  ReturnType<typeof userApi.getCurrentUser>
+>('user/getCurrentUser', userApi.getCurrentUser)
 
 export const register = createAsyncThunk<Promise<User>, RegisterData>(
   'user/register',
@@ -43,3 +51,11 @@ export const reenter = createAsyncThunk<
   nookie.set(null, 'access_token', access)
   return { access, refresh }
 })
+
+export const update = createAsyncThunk<Promise<User>, UserUpdateData>(
+  'user/update',
+  (data, thunkAPI) => {
+    const { id } = infoSelector(thunkAPI.getState())
+    return userApi.updateUser(id, data)
+  }
+)

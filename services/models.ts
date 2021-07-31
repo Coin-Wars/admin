@@ -23,7 +23,7 @@ export interface User {
   telegram_user: number
 }
 
-export interface UserUpdate {
+export interface UserUpdateData {
   email?: string
   first_name?: string
   last_name?: string

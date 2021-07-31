@@ -8,9 +8,9 @@ export const AuthorizedLayout: React.FC = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    console.log(localStorage.getItem('user_info_filled'))
     if (!localStorage.getItem('user_info_filled')) {
       onOpen()
+      localStorage.removeItem('user_info_filled')
     }
   }, [])
 

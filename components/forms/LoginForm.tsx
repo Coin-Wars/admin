@@ -61,6 +61,7 @@ export const LoginForm: React.VFC = () => {
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
+
               <FormControl
                 id="password"
                 isInvalid={errors.password && touchedFields.password}
@@ -80,6 +81,7 @@ export const LoginForm: React.VFC = () => {
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
               </FormControl>
+
               <Stack spacing={10}>
                 <Button
                   bg={'blue.400'}

@@ -21,12 +21,9 @@ export const useAuth = () => {
   return {
     isLogged: useSelector(isLoggedSelector),
     tokens: useSelector(tokensSelector),
-    userInfo: useSelector(infoSelector),
-    nickname: useSelector(nicknameSelector),
     login: (data: LoginData) => dispatch(login(data)).unwrap(),
     reenter: (refresh: Tokens['refresh']) =>
       dispatch(reenter({ refresh })).unwrap(),
-    getCurrentUser: () => dispatch(getCurrentUser()).unwrap(),
     logout: () => dispatch(logout()).unwrap(),
     register: (data: RegisterData) => dispatch(register(data)).unwrap(),
   }

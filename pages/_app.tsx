@@ -7,6 +7,7 @@ import { DefaultSeo } from 'next-seo'
 import { createAxiosInterceptors } from 'services/api'
 import { actions as userActions } from 'store/user'
 import { BaseLayout } from 'components/layouts/BaseLayout'
+import { ToastProvider } from 'providers/ToastProvider'
 import 'styles/index.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
@@ -14,9 +15,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <DefaultSeo titleTemplate="%s | Storegram" defaultTitle="Storegram" />
     <ChakraProvider>
       <CSSReset />
-      <BaseLayout>
-        <Component {...pageProps} />
-      </BaseLayout>
+      <ToastProvider>
+        <BaseLayout>
+          <Component {...pageProps} />
+        </BaseLayout>
+      </ToastProvider>
     </ChakraProvider>
   </>
 )

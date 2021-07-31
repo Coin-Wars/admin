@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { reenter, getCurrentUser, logout } from './actions'
+import { reenter, getCurrentUser, logout, update } from './actions'
 import { ID } from 'services/models'
 
 export interface UserAuthState {
@@ -56,6 +56,9 @@ const userSlice = createSlice({
       )
       .addCase(logout.fulfilled, (state, action) =>
         userSlice.caseReducers.reset(state, action)
+      )
+      .addCase(update.fulfilled, (state, action) =>
+        userSlice.caseReducers.setInfo(state, action)
       )
   },
 })

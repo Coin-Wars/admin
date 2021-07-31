@@ -32,6 +32,8 @@ export const createAxiosInterceptors = (store: storeType) => {
         await store.dispatch(reenter({ refresh }))
         const { access } = tokensSelector(store.getState())
 
+        console.log(access)
+
         error.response.config.headers.Authorization = `Bearer ${access}`
         await axios.request(error.response.config)
       } catch (err) {

@@ -17,11 +17,13 @@ import {
 import { zIndexes } from 'assets/styles/variables'
 import { BiChevronDown, BiMenu, BiUserCircle } from 'react-icons/bi'
 import { useAuth } from 'hooks/useAuth'
+import { useUser } from 'hooks/useUser'
 import RouterLink from 'next/link'
 import { routes } from 'resources/routes'
 
 export const AuthNavbar: React.VFC = () => {
-  const { nickname, logout } = useAuth()
+  const { logout } = useAuth()
+  const { nickname } = useUser()
 
   return (
     <Flex
