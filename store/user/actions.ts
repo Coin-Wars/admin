@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as authApi from 'services/api/auth'
 import * as userApi from 'services/api/user'
 import {
+  ID,
   LoginData,
   RegisterData,
   Tokens,
@@ -13,6 +14,7 @@ import Router from 'next/router'
 import { actions as userActions } from './index'
 import { routes } from 'resources/routes'
 import { infoSelector } from './selectors'
+import { RootState } from '../index'
 
 export const getCurrentUser = createAsyncThunk<
   ReturnType<typeof userApi.getCurrentUser>
@@ -52,10 +54,11 @@ export const reenter = createAsyncThunk<
   return { access, refresh }
 })
 
-export const update = createAsyncThunk<Promise<User>, UserUpdateData>(
-  'user/update',
-  (data, thunkAPI) => {
-    const { id } = infoSelector(thunkAPI.getState())
-    return userApi.updateUser(id, data)
-  }
-)
+export const update = createAsyncThunk<
+  Promise<User>,
+  UserUpdateData,
+  { state: RootState }
+>('user/update', (data, thunkAPI) => {
+  const { id } = infoSelector(thunkAPI.getState())
+  return userApi.updateUser(id as ID, data)
+})

@@ -1,18 +1,14 @@
 import React from 'react'
 import { useDisclosure } from '@chakra-ui/hooks'
 import {
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalBody,
   ModalCloseButton,
   ModalHeader,
-  FormControl,
-  FormLabel,
-  Input,
 } from '@chakra-ui/react'
-import { UserInfoForm } from 'components/forms/UserInfoForm'
+import { InitialUserInfoForm } from 'components/forms/InitialUserInfoForm'
 
 interface InitialUserInfoModalProps {
   isOpen: ReturnType<typeof useDisclosure>['isOpen']
@@ -22,17 +18,15 @@ interface InitialUserInfoModalProps {
 export const InitialUserInfoModal: React.VFC<InitialUserInfoModalProps> = ({
   isOpen,
   onClose,
-}) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Расскажите о себе</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody pb={6}>
-          <UserInfoForm />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  )
-}
+}) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Расскажите о себе</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody pb={6}>
+        <InitialUserInfoForm submitCallback={onClose} />
+      </ModalBody>
+    </ModalContent>
+  </Modal>
+)

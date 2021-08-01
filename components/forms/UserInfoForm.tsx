@@ -11,26 +11,21 @@ import { useForm } from 'react-hook-form'
 import { UserUpdateData } from 'services/models'
 import { useUser } from 'hooks/useUser'
 
-interface UserInfoFormProps {
-  submitCallback?: () => any
-}
-
-export const UserInfoForm: React.VFC<UserInfoFormProps> = ({
-  submitCallback,
-}) => {
+export const UserInfoForm: React.VFC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, touchedFields },
-  } = useForm<UserUpdateData>()
+    formState: { errors, isSubmitting, touchedFields, dirtyFields },
+  } = useForm<UserUpdateData>({
+    defaultValues: {
+      email: '',
+    },
+  })
   const { updateUser } = useUser()
 
-  const onSubmit = (data: UserUpdateData) =>
-    updateUser(data).then(() => {
-      if (submitCallback) {
-        submitCallback()
-      }
-    })
+  const requiredFieldsWithPassword = ['email', 'password']
+
+  const onSubmit = (data: UserUpdateData) => updateUser(data)
 
   return (
     <Box w="100%">
@@ -81,6 +76,71 @@ export const UserInfoForm: React.VFC<UserInfoFormProps> = ({
             {errors.last_name && errors.last_name.message}
           </FormErrorMessage>
         </FormControl>
+
+        <FormControl
+          mt={4}
+          id="email"
+          isInvalid={errors.email && touchedFields.email}
+        >
+          <FormLabel>Email</FormLabel>
+          <Input
+            id="email"
+            {...register('email', {
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: 'Неправильно введен email',
+              },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl
+          mt={4}
+          id="password"
+          isInvalid={errors.password && touchedFields.password}
+        >
+          <FormLabel>Изменить пароль</FormLabel>
+          <Input
+            id="password"
+            {...register('password', {
+              minLength: {
+                value: 8,
+                message: 'Пароль должен содержать от 8 символов',
+              },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        {requiredFieldsWithPassword.some(
+          (field) => dirtyFields[field as keyof UserUpdateData]
+        ) && (
+          <FormControl
+            mt={4}
+            id="old_password"
+            isInvalid={errors.old_password && touchedFields.old_password}
+          >
+            <FormLabel>Введите старый пароль</FormLabel>
+            <Input
+              id="old_password"
+              {...register('old_password', {
+                required: 'Старый пароль обязательный',
+                minLength: {
+                  value: 8,
+                  message: 'Пароль должен содержать от 8 символов',
+                },
+              })}
+            />
+            <FormErrorMessage>
+              {errors.old_password && errors.old_password.message}
+            </FormErrorMessage>
+          </FormControl>
+        )}
 
         <Button
           colorScheme="blue"

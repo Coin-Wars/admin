@@ -10,7 +10,7 @@ export const AuthorizedLayout: React.FC = ({ children }) => {
   useEffect(() => {
     if (!localStorage.getItem('user_info_filled')) {
       onOpen()
-      localStorage.removeItem('user_info_filled')
+      localStorage.setItem('user_info_filled', '1')
     }
   }, [])
 

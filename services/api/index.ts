@@ -13,7 +13,7 @@ export const axios = axiosClient.create({
 })
 
 export const createAxiosInterceptors = (store: storeType) => {
-  const { access, refresh } = tokensSelector(store.getState())
+  const { refresh } = tokensSelector(store.getState())
 
   const interceptor = axios.interceptors.response.use(
     (response) => Promise.resolve(response),
@@ -32,8 +32,6 @@ export const createAxiosInterceptors = (store: storeType) => {
         await store.dispatch(reenter({ refresh }))
         const { access } = tokensSelector(store.getState())
 
-        console.log(access)
-
         error.response.config.headers.Authorization = `Bearer ${access}`
         await axios.request(error.response.config)
       } catch (err) {
@@ -47,6 +45,8 @@ export const createAxiosInterceptors = (store: storeType) => {
 
   axios.interceptors.request.use(
     (config) => {
+      const { access } = tokensSelector(store.getState())
+
       if (access) {
         config.headers.Authorization = `Bearer ${access}`
       }
