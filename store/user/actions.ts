@@ -1,9 +1,8 @@
 import nookie from 'nookies'
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, EntityId } from '@reduxjs/toolkit'
 import * as authApi from 'services/api/auth'
 import * as userApi from 'services/api/user'
 import {
-  ID,
   LoginData,
   RegisterData,
   Tokens,
@@ -14,7 +13,7 @@ import Router from 'next/router'
 import { actions as userActions } from './index'
 import { routes } from 'resources/routes'
 import { infoSelector } from './selectors'
-import { RootState } from '../index'
+import { RootState } from 'store'
 
 export const getCurrentUser = createAsyncThunk<
   ReturnType<typeof userApi.getCurrentUser>
@@ -60,5 +59,5 @@ export const update = createAsyncThunk<
   { state: RootState }
 >('user/update', (data, thunkAPI) => {
   const { id } = infoSelector(thunkAPI.getState())
-  return userApi.updateUser(id as ID, data)
+  return userApi.updateUser(id as EntityId, data)
 })

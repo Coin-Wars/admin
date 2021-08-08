@@ -1,19 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, EntityId } from '@reduxjs/toolkit'
+import { Object } from 'ts-toolbelt'
 import { reenter, getCurrentUser, logout, update } from './actions'
-import { ID } from 'services/models'
 
-export interface UserAuthState {
-  access: string | null
-  refresh: string | null
-}
+export type UserAuthState = Object.Nullable<{
+  access: string
+  refresh: string
+}>
 
-export interface UserInfoState {
-  id: ID | null
-  email: string | null
-  first_name: string | null
-  last_name: string | null
-  telegram_user: number | null
-}
+export type UserInfoState = Object.Nullable<{
+  id: EntityId
+  email: string
+  first_name: string
+  last_name: string
+  telegram_user: number
+}>
 
 const initialState = {
   auth: {

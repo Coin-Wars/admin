@@ -8,6 +8,7 @@ import { createAxiosInterceptors } from 'services/api'
 import { actions as userActions } from 'store/user'
 import { BaseLayout } from 'components/layouts/BaseLayout'
 import { ToastProvider } from 'providers/ToastProvider'
+import { ErrorBoundary } from 'components/ErrorBoundary'
 import 'styles/index.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
@@ -16,9 +17,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <ChakraProvider>
       <CSSReset />
       <ToastProvider>
-        <BaseLayout>
-          <Component {...pageProps} />
-        </BaseLayout>
+        <ErrorBoundary>
+          <BaseLayout>
+            <Component {...pageProps} />
+          </BaseLayout>
+        </ErrorBoundary>
       </ToastProvider>
     </ChakraProvider>
   </>

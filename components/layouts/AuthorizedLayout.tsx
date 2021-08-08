@@ -19,7 +19,7 @@ export const AuthorizedLayout: React.FC = ({ children }) => {
       {isOpen && <InitialUserInfoModal isOpen={isOpen} onClose={onClose} />}
       <Box>
         <Sidebar />
-        <Container>
+        <Container maxW="6xl">
           <Box ml={{ base: 0, md: 60 }} p="4">
             {children}
           </Box>

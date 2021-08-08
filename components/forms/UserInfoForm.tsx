@@ -10,22 +10,39 @@ import {
 import { useForm } from 'react-hook-form'
 import { UserUpdateData } from 'services/models'
 import { useUser } from 'hooks/useUser'
+import _ from 'lodash'
 
 export const UserInfoForm: React.VFC = () => {
+  const { updateUser, userInfo } = useUser()
+
+  const defaultValues = {
+    email: userInfo.email,
+    first_name: userInfo.first_name,
+    last_name: userInfo.last_name,
+    old_password: '',
+    password: '',
+  } as UserUpdateData
+  const requiredFieldsWithPassword = ['email', 'password']
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, touchedFields, dirtyFields },
   } = useForm<UserUpdateData>({
-    defaultValues: {
-      email: '',
-    },
+    defaultValues,
   })
-  const { updateUser } = useUser()
 
-  const requiredFieldsWithPassword = ['email', 'password']
-
-  const onSubmit = (data: UserUpdateData) => updateUser(data)
+  const onSubmit = async (data: UserUpdateData) => {
+    await updateUser(
+      _.omitBy(
+        data,
+        (val, key) => val === defaultValues[key as keyof UserUpdateData]
+      )
+    )
+    setValue('password', '')
+    setValue('old_password', '')
+  }
 
   return (
     <Box w="100%">
@@ -36,6 +53,7 @@ export const UserInfoForm: React.VFC = () => {
         >
           <FormLabel>Имя</FormLabel>
           <Input
+            bg="white"
             id="first_name"
             {...register('first_name', {
               minLength: {
@@ -60,6 +78,7 @@ export const UserInfoForm: React.VFC = () => {
         >
           <FormLabel>Фамилия</FormLabel>
           <Input
+            bg="white"
             id="last_name"
             {...register('last_name', {
               minLength: {
@@ -84,6 +103,7 @@ export const UserInfoForm: React.VFC = () => {
         >
           <FormLabel>Email</FormLabel>
           <Input
+            bg="white"
             id="email"
             {...register('email', {
               pattern: {
@@ -104,7 +124,9 @@ export const UserInfoForm: React.VFC = () => {
         >
           <FormLabel>Изменить пароль</FormLabel>
           <Input
+            bg="white"
             id="password"
+            type="password"
             {...register('password', {
               minLength: {
                 value: 8,
@@ -123,10 +145,13 @@ export const UserInfoForm: React.VFC = () => {
           <FormControl
             mt={4}
             id="old_password"
+            type="password"
             isInvalid={errors.old_password && touchedFields.old_password}
           >
             <FormLabel>Введите старый пароль</FormLabel>
             <Input
+              bg="white"
+              type="password"
               id="old_password"
               {...register('old_password', {
                 required: 'Старый пароль обязательный',

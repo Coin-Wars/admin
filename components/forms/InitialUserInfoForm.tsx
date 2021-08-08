@@ -10,6 +10,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { UserUpdateData } from 'services/models'
 import { useUser } from 'hooks/useUser'
+import _ from 'lodash'
 
 interface UserInfoFormProps {
   submitCallback?: () => any
@@ -18,19 +19,30 @@ interface UserInfoFormProps {
 export const InitialUserInfoForm: React.VFC<UserInfoFormProps> = ({
   submitCallback,
 }) => {
+  const { updateUser, userInfo } = useUser()
+
+  const defaultValues = {
+    first_name: userInfo.first_name,
+    last_name: userInfo.last_name,
+  } as UserUpdateData
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
-  } = useForm<UserUpdateData>()
-  const { updateUser } = useUser()
+  } = useForm<UserUpdateData>({ defaultValues })
 
-  const onSubmit = (data: UserUpdateData) =>
-    updateUser(data).then(() => {
-      if (submitCallback) {
-        submitCallback()
-      }
-    })
+  const onSubmit = async (data: UserUpdateData) => {
+    await updateUser(
+      _.omitBy(
+        data,
+        (val, key) => val === defaultValues[key as keyof UserUpdateData]
+      )
+    )
+    if (submitCallback) {
+      submitCallback()
+    }
+  }
 
   return (
     <Box w="100%">
