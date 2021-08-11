@@ -15,9 +15,13 @@ export const routes = {
     name: 'Панель',
     path: '/panel',
   },
-  create_store: {
+  createStore: {
     name: 'Создать магазин',
     path: '/create-store',
+  },
+  editStore: {
+    name: 'Редактировать магазин',
+    path: '/edit-store',
   },
   settings: {
     name: 'Настройки',

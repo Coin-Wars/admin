@@ -29,7 +29,6 @@ export type UserUpdateData = Object.Optional<
     email: string
     first_name: string
     last_name: string
-    telegram_user: number
     old_password: string
     password: string
   }>
@@ -49,3 +48,12 @@ export interface Store {
   description: string | null
   logo: string | null
 }
+
+export type StoreUpdateData = Object.Optional<
+  Object.Nullable<{
+    telegram_token: string
+    name: string
+    description: string
+    logo: File
+  }>
+>

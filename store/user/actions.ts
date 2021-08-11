@@ -15,14 +15,12 @@ import { routes } from 'resources/routes'
 import { infoSelector } from './selectors'
 import { RootState } from 'store'
 
-export const getCurrentUser = createAsyncThunk<
-  ReturnType<typeof userApi.getCurrentUser>
->('user/getCurrentUser', userApi.getCurrentUser)
-
-export const register = createAsyncThunk<Promise<User>, RegisterData>(
-  'user/register',
-  authApi.register
+export const getCurrentUser = createAsyncThunk(
+  'user/getCurrentUser',
+  userApi.getCurrentUser
 )
+
+export const register = createAsyncThunk('user/register', authApi.register)
 
 export const login = createAsyncThunk<Promise<Tokens>, LoginData>(
   'user/login',

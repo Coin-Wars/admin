@@ -1,5 +1,5 @@
 import { createSlice, EntityId } from '@reduxjs/toolkit'
-import { createStore } from './actions'
+import { createStore, getStore, updateStore } from './actions'
 import { Object } from 'ts-toolbelt'
 
 export type StoreState = Object.Nullable<{
@@ -21,13 +21,20 @@ const storeSlice = createSlice({
   initialState,
   reducers: {
     setInfo(state, action) {
-      state = action.payload
+      return { ...action.payload }
     },
   },
   extraReducers(builder) {
-    builder.addCase(createStore.fulfilled, (state, action) =>
-      storeSlice.caseReducers.setInfo(state, action)
-    )
+    builder
+      .addCase(createStore.fulfilled, (state, action) =>
+        storeSlice.caseReducers.setInfo(state, action)
+      )
+      .addCase(getStore.fulfilled, (state, action) =>
+        storeSlice.caseReducers.setInfo(state, action)
+      )
+      .addCase(updateStore.fulfilled, (state, action) =>
+        storeSlice.caseReducers.setInfo(state, action)
+      )
   },
 })
 

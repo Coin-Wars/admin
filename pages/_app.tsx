@@ -3,17 +3,21 @@ import { ChakraProvider, CSSReset } from '@chakra-ui/react'
 import nookie from 'nookies'
 import { wrapper } from 'store'
 import { getCurrentUser } from 'store/user/actions'
+import { getStore } from 'store/store/actions'
 import { DefaultSeo } from 'next-seo'
 import { createAxiosInterceptors } from 'services/api'
 import { actions as userActions } from 'store/user'
 import { BaseLayout } from 'components/layouts/BaseLayout'
 import { ToastProvider } from 'providers/ToastProvider'
 import { ErrorBoundary } from 'components/ErrorBoundary'
+import { infoSelector } from 'store/user/selectors'
 import 'styles/index.scss'
+import { EntityId } from '@reduxjs/toolkit'
+import { seo } from 'resources/seo'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <>
-    <DefaultSeo titleTemplate="%s | Storegram" defaultTitle="Storegram" />
+    <DefaultSeo {...seo} />
     <ChakraProvider>
       <CSSReset />
       <ToastProvider>
@@ -41,6 +45,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         try {
           createAxiosInterceptors(store)
           await store.dispatch(getCurrentUser())
+          await store.dispatch(getStore())
         } catch (e) {
           nookie.destroy(ctx, 'access_token')
           nookie.destroy(ctx, 'refresh_token')

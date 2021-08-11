@@ -13,22 +13,37 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
-import { StoreCreationData } from 'services/models'
+import { StoreUpdateData } from 'services/models'
 import { useStore } from 'hooks/useStore'
 import { FileUpload } from 'components/common/FileUpload'
+import { Logo } from 'components/common/store/Logo'
+import _ from 'lodash'
 
-export const CreateStoreForm: React.FC = () => {
-  const { createStore } = useStore()
+export const EditStoreForm: React.FC = () => {
+  const { updateStore, currentStore } = useStore()
   const [logo, setLogo] = useState<File>()
+
+  const defaultValues = {
+    telegram_token: '',
+    name: currentStore.name,
+    description: currentStore.description,
+    logo: null,
+  }
 
   const {
     register,
     control,
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
-  } = useForm<StoreCreationData>()
+  } = useForm<StoreUpdateData>({ defaultValues })
 
-  const onSubmit = (data: StoreCreationData) => createStore(data)
+  const onSubmit = (data: StoreUpdateData) =>
+    updateStore(
+      _.omitBy(
+        data,
+        (val, key) => val === defaultValues[key as keyof StoreUpdateData]
+      )
+    )
 
   return (
     <Stack my="24px" align="center">
@@ -36,7 +51,7 @@ export const CreateStoreForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack align="center">
             <Heading fontSize="4xl" my="24px">
-              Создание магазина
+              Редактировать магазин
             </Heading>
           </Stack>
           <Box
@@ -46,24 +61,6 @@ export const CreateStoreForm: React.FC = () => {
             p={8}
           >
             <Stack spacing={4}>
-              <FormControl
-                id="telegram_token"
-                isInvalid={
-                  errors.telegram_token && touchedFields.telegram_token
-                }
-              >
-                <FormLabel>Токен</FormLabel>
-                <Input
-                  id="telegram_token"
-                  {...register('telegram_token', {
-                    required: 'Токен обязательный',
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.telegram_token && errors.telegram_token.message}
-                </FormErrorMessage>
-              </FormControl>
-
               <FormControl
                 id="name"
                 isInvalid={errors.name && touchedFields.name}
@@ -126,7 +123,22 @@ export const CreateStoreForm: React.FC = () => {
                 name="logo"
               />
 
+              {currentStore.logo && <Logo src={currentStore.logo} />}
+
               <Text>{logo?.name}</Text>
+
+              <FormControl
+                id="telegram_token"
+                isInvalid={
+                  errors.telegram_token && touchedFields.telegram_token
+                }
+              >
+                <FormLabel>Изменить существующий токен:</FormLabel>
+                <Input id="telegram_token" {...register('telegram_token')} />
+                <FormErrorMessage>
+                  {errors.telegram_token && errors.telegram_token.message}
+                </FormErrorMessage>
+              </FormControl>
 
               <Button
                 bg={'blue.400'}

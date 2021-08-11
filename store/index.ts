@@ -1,4 +1,11 @@
-import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit'
+import {
+  AnyAction,
+  combineReducers,
+  configureStore,
+  createAsyncThunk,
+  AsyncThunkPayloadCreator,
+  Dispatch,
+} from '@reduxjs/toolkit'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import { reducer as userSliceReducer } from './user'
 import { reducer as storeSliceReducer } from './store'
