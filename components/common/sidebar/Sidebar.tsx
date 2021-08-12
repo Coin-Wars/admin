@@ -16,14 +16,14 @@ import { zIndexes } from 'assets/styles/variables'
 interface SidebarProps extends BoxProps {}
 
 export const Sidebar: React.VFC<SidebarProps> = ({ ...rest }) => {
-  const { currentStore } = useStore()
+  const { currentStore, storeExists } = useStore()
 
   const sidebarLinks = useMemo(
     () =>
       [
         { ...routes.panel, icon: BiHome, show: true },
-        { ...routes.createStore, icon: BiStore, show: !currentStore.id },
-        { ...routes.editStore, icon: BiStore, show: currentStore.id },
+        { ...routes.createStore, icon: BiStore, show: !storeExists },
+        { ...routes.editStore, icon: BiStore, show: storeExists },
       ].filter((link) => link.show),
     [currentStore]
   )

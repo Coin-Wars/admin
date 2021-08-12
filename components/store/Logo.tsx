@@ -11,6 +11,7 @@ export const Logo: React.VFC<LogoProps> = ({ src }) => {
 }
 
 const LogoImage = styled(Image)`
-  width: 80px;
+  width: 50px;
   box-shadow: var(--chakra-shadows-lg);
+  border-radius: var(--chakra-radii-lg);
 `

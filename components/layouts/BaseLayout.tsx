@@ -10,7 +10,10 @@ export const BaseLayout: React.FC = ({ children }) => {
   return (
     <>
       {isLogged ? <AuthNavbar /> : <UnauthNavbar />}
-      <Box bg={useColorModeValue('gray.50', 'gray.800')} minH="100%">
+      <Box
+        bg={useColorModeValue('gray.50', 'gray.800')}
+        minH="calc(100vh - 80px)"
+      >
         {children}
       </Box>
     </>

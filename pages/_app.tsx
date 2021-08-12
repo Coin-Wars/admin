@@ -10,9 +10,7 @@ import { actions as userActions } from 'store/user'
 import { BaseLayout } from 'components/layouts/BaseLayout'
 import { ToastProvider } from 'providers/ToastProvider'
 import { ErrorBoundary } from 'components/ErrorBoundary'
-import { infoSelector } from 'store/user/selectors'
 import 'styles/index.scss'
-import { EntityId } from '@reduxjs/toolkit'
 import { seo } from 'resources/seo'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (

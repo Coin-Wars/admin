@@ -16,7 +16,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { StoreUpdateData } from 'services/models'
 import { useStore } from 'hooks/useStore'
 import { FileUpload } from 'components/common/FileUpload'
-import { Logo } from 'components/common/store/Logo'
+import { Logo } from 'components/store/Logo'
 import _ from 'lodash'
 
 export const EditStoreForm: React.FC = () => {

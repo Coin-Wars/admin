@@ -7,3 +7,8 @@ export const storeSelector = createSelector(
   storeStateSelector,
   (store) => store
 )
+
+export const storeExistsSelector = createSelector(
+  storeSelector,
+  (store) => store.id
+)
