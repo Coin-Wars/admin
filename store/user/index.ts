@@ -12,7 +12,6 @@ export type UserInfoState = Object.Nullable<{
   email: string
   first_name: string
   last_name: string
-  telegram_user: number
 }>
 
 const initialState = {
@@ -25,7 +24,6 @@ const initialState = {
     email: null,
     first_name: null,
     last_name: null,
-    telegram_user: null,
   } as UserInfoState,
 }
 

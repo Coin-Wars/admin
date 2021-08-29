@@ -1,11 +1,19 @@
 import { createAsyncThunk, EntityId } from '@reduxjs/toolkit'
 import * as storeApi from 'services/api/store'
-import { Store, StoreUpdateData } from 'services/models'
+import { Store, StoreCreationData, StoreUpdateData } from 'services/models'
 import { infoSelector } from 'store/user/selectors'
 import { storeSelector } from 'store/store/selectors'
 import { RootState } from 'store'
+import Router from 'next/router'
 
-export const createStore = createAsyncThunk('store/create', storeApi.create)
+export const createStore = createAsyncThunk(
+  'store/create',
+  async (data: StoreCreationData) => {
+    const store = await storeApi.create(data)
+    Router.replace('/edit-store')
+    return store
+  }
+)
 
 export const getStore = createAsyncThunk<Store, void, { state: RootState }>(
   'store/getStoreBySellerId',

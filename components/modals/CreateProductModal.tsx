@@ -1,31 +1,31 @@
 import React from 'react'
-import { useDisclosure } from '@chakra-ui/hooks'
 import {
   Modal,
-  ModalOverlay,
-  ModalContent,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
   ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react'
-import { InitialUserInfoForm } from 'components/forms/InitialUserInfoForm'
+import { useDisclosure } from '@chakra-ui/hooks'
+import { CreateProductForm } from 'components/forms/CreateProductForm'
 
-interface InitialUserInfoModalProps {
+interface CreateProductModalProps {
   isOpen: boolean
   onClose: ReturnType<typeof useDisclosure>['onClose']
 }
 
-export const InitialUserInfoModal: React.VFC<InitialUserInfoModalProps> = ({
+export const CreateProductModal: React.VFC<CreateProductModalProps> = ({
   isOpen,
   onClose,
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader>Расскажите о себе</ModalHeader>
+      <ModalHeader>Добавить товар</ModalHeader>
       <ModalCloseButton />
       <ModalBody pb={6}>
-        <InitialUserInfoForm submitCallback={onClose} />
+        <CreateProductForm onSubmitCallback={onClose} />
       </ModalBody>
     </ModalContent>
   </Modal>

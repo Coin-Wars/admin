@@ -5,12 +5,12 @@ import { useStore } from 'hooks/useStore'
 
 export function withNoStoreOwning<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
-    const { currentStore } = useStore()
+    const { storeExists } = useStore()
     const Router = useRouter()
     const [verified, setVerified] = useState(false)
 
     useEffect(() => {
-      if (currentStore) {
+      if (storeExists) {
         Router.replace(routes.panel.path)
       } else {
         setVerified(true)

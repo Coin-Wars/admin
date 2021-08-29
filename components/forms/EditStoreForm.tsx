@@ -24,7 +24,6 @@ export const EditStoreForm: React.FC = () => {
   const [logo, setLogo] = useState<File>()
 
   const defaultValues = {
-    telegram_token: '',
     name: currentStore.name,
     description: currentStore.description,
     logo: null,
@@ -126,19 +125,6 @@ export const EditStoreForm: React.FC = () => {
               {currentStore.logo && <Logo src={currentStore.logo} />}
 
               <Text>{logo?.name}</Text>
-
-              <FormControl
-                id="telegram_token"
-                isInvalid={
-                  errors.telegram_token && touchedFields.telegram_token
-                }
-              >
-                <FormLabel>Изменить существующий токен:</FormLabel>
-                <Input id="telegram_token" {...register('telegram_token')} />
-                <FormErrorMessage>
-                  {errors.telegram_token && errors.telegram_token.message}
-                </FormErrorMessage>
-              </FormControl>
 
               <Button
                 bg={'blue.400'}

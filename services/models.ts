@@ -21,7 +21,6 @@ export interface User {
   email: string
   first_name: string
   last_name: string
-  telegram_user: number
 }
 
 export type UserUpdateData = Object.Optional<
@@ -35,7 +34,6 @@ export type UserUpdateData = Object.Optional<
 >
 
 export interface StoreCreationData {
-  telegram_token: string
   name: string
   description?: string
   logo?: File
@@ -51,9 +49,21 @@ export interface Store {
 
 export type StoreUpdateData = Object.Optional<
   Object.Nullable<{
-    telegram_token: string
     name: string
     description: string
     logo: File
   }>
 >
+
+export interface Product {
+  readonly id: EntityId
+  store: Store
+  name: string
+  description: string | null
+}
+
+export interface ProductCreationData {
+  name: string
+  description?: string
+  image?: File
+}

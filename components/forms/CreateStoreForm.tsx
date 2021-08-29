@@ -47,24 +47,6 @@ export const CreateStoreForm: React.FC = () => {
           >
             <Stack spacing={4}>
               <FormControl
-                id="telegram_token"
-                isInvalid={
-                  errors.telegram_token && touchedFields.telegram_token
-                }
-              >
-                <FormLabel>Токен</FormLabel>
-                <Input
-                  id="telegram_token"
-                  {...register('telegram_token', {
-                    required: 'Токен обязательный',
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.telegram_token && errors.telegram_token.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl
                 id="name"
                 isInvalid={errors.name && touchedFields.name}
               >

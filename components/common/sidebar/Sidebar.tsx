@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { SidebarLink } from './SidebarLink'
 import { routes } from 'resources/routes'
-import { BiHome, BiStore } from 'react-icons/bi'
+import { BiHome, BiStore, BiCube } from 'react-icons/bi'
 import { useStore } from 'hooks/useStore'
 import { zIndexes } from 'assets/styles/variables'
 
@@ -24,6 +24,7 @@ export const Sidebar: React.VFC<SidebarProps> = ({ ...rest }) => {
         { ...routes.panel, icon: BiHome, show: true },
         { ...routes.createStore, icon: BiStore, show: !storeExists },
         { ...routes.editStore, icon: BiStore, show: storeExists },
+        { ...routes.products, icon: BiCube, show: storeExists },
       ].filter((link) => link.show),
     [currentStore]
   )

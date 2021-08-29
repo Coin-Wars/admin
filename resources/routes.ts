@@ -27,4 +27,8 @@ export const routes = {
     name: 'Настройки',
     path: '/settings',
   },
+  products: {
+    name: 'Товары',
+    path: '/products',
+  },
 }
