@@ -29,5 +29,5 @@ export const updateStore = createAsyncThunk<
   { state: RootState }
 >('store/update', (data, { getState }) => {
   const { id } = storeSelector(getState())
-  return storeApi.update(data, id as EntityId)
+  return storeApi.update({ id: id as EntityId, ...data })
 })

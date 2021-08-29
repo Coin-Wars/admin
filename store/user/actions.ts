@@ -57,5 +57,5 @@ export const update = createAsyncThunk<
   { state: RootState }
 >('user/update', (data, thunkAPI) => {
   const { id } = infoSelector(thunkAPI.getState())
-  return userApi.updateUser(id as EntityId, data)
+  return userApi.updateUser({ id: id as EntityId, ...data })
 })

@@ -1,17 +1,6 @@
 import { useSelector } from 'react-redux'
-import {
-  isLoggedSelector,
-  tokensSelector,
-  infoSelector,
-  nicknameSelector,
-} from 'store/user/selectors'
-import {
-  login,
-  reenter,
-  register,
-  getCurrentUser,
-  logout,
-} from 'store/user/actions'
+import { isLoggedSelector, tokensSelector } from 'store/user/selectors'
+import { login, reenter, register, logout } from 'store/user/actions'
 import { LoginData, RegisterData, Tokens } from 'services/models'
 import { useAppDispatch } from 'store'
 

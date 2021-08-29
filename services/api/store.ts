@@ -15,9 +15,9 @@ export const getBySellerId = (sellerId: EntityId) =>
     .get<Store[]>('stores/', { params: { seller_id: sellerId } })
     .then((res) => res.data)
 
-export const update = (data: StoreUpdateData, storeId: EntityId) =>
+export const update = (data: StoreUpdateData) =>
   axios
-    .patch<Store>(`stores/${storeId}/`, objectToFormData(data), {
+    .patch<Store>(`stores/${data.id}/`, objectToFormData(data), {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((res) => res.data)

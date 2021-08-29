@@ -94,7 +94,7 @@ export const CreateStoreForm: React.FC = () => {
               <Controller
                 render={({ field: { onChange } }) => (
                   <FileUpload
-                    maxFiles={2}
+                    maxFiles={1}
                     accept="image/*"
                     maxSize={12582912}
                     onDrop={(acceptedFiles) => {

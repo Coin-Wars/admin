@@ -17,21 +17,24 @@ export interface LoginData {
 }
 
 export interface User {
-  readonly id: EntityId
+  id: EntityId
   email: string
   first_name: string
   last_name: string
 }
 
-export type UserUpdateData = Object.Optional<
-  Object.Nullable<{
-    email: string
-    first_name: string
-    last_name: string
-    old_password: string
-    password: string
-  }>
->
+export interface UserUpdateData extends Object.Optional<Object.Nullable<User>> {
+  old_password?: string | null
+  password?: string | null
+}
+
+export interface Store {
+  id: EntityId
+  seller: User
+  name: string
+  description: string
+  logo: string | null
+}
 
 export interface StoreCreationData {
   name: string
@@ -39,31 +42,36 @@ export interface StoreCreationData {
   logo?: File
 }
 
-export interface Store {
-  id: EntityId
-  seller: User
-  name: string
-  description: string | null
-  logo: string | null
-}
-
-export type StoreUpdateData = Object.Optional<
-  Object.Nullable<{
-    name: string
-    description: string
-    logo: File
-  }>
->
+export interface StoreUpdateData
+  extends Object.Optional<Object.Nullable<Omit<Store, 'seller'>>> {}
 
 export interface Product {
-  readonly id: EntityId
+  id: EntityId
   store: Store
+  images: ProductImage[]
+  options: ProductOption[]
   name: string
   description: string | null
+}
+
+export interface ProductImage {
+  image: string
+}
+
+export interface ProductOption {
+  key: string
+  value: string
 }
 
 export interface ProductCreationData {
   name: string
   description?: string
-  image?: File
+  is_shipping_required: boolean
+  price: number
+  images?: ProductImage[]
+  options?: ProductOption[]
 }
+
+export type ProductUpdateData = Object.Optional<
+  Object.Nullable<Omit<Product, 'store'>>
+>

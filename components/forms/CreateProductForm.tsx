@@ -9,10 +9,20 @@ import {
   Text,
   Stack,
   Textarea,
+  Switch,
+  Flex,
+  Table,
+  Tbody,
+  Thead,
+  TableCaption,
+  Tr,
+  Th,
+  Td,
 } from '@chakra-ui/react'
 import { Controller, useForm } from 'react-hook-form'
 import { ProductCreationData } from 'services/models'
 import { FileUpload } from 'components/common/FileUpload'
+import { useProducts } from 'hooks/useProducts'
 
 interface CreateProductFormProps {
   onSubmitCallback?: () => void
@@ -21,7 +31,8 @@ interface CreateProductFormProps {
 export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
   onSubmitCallback,
 }) => {
-  const [image, setImage] = useState<File>()
+  const [images, setImages] = useState<File[]>([])
+  const { createProduct } = useProducts()
 
   const {
     register,
@@ -30,7 +41,9 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<ProductCreationData>()
 
-  const onSubmit = () => {
+  const onSubmit = async (data: ProductCreationData) => {
+    await createProduct(data)
+
     if (onSubmitCallback) {
       onSubmitCallback()
     }
@@ -80,7 +93,52 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             </FormErrorMessage>
           </FormControl>
 
-          <FormLabel>Изображение товара</FormLabel>
+          <FormControl
+            id="price"
+            isInvalid={errors.price && touchedFields.price}
+          >
+            <FormLabel>Цена</FormLabel>
+            <Input type="number" id="price" {...register('price')} />
+            <FormErrorMessage>
+              {errors.price && errors.price.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            id="is_shipping_required"
+            isInvalid={
+              errors.is_shipping_required && touchedFields.is_shipping_required
+            }
+          >
+            <Flex alignItems="center">
+              <Switch
+                id="is_shipping_required"
+                {...register('is_shipping_required')}
+              />
+              <FormLabel ml="2" mb={0}>
+                Обязательна ли доставка
+              </FormLabel>
+            </Flex>
+            <FormErrorMessage>
+              {errors.is_shipping_required &&
+                errors.is_shipping_required.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          <Table variant="simple">
+            <TableCaption>
+              <Button>Добавить опцию</Button>
+            </TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Свойство</Th>
+                <Th>Значение</Th>
+              </Tr>
+            </Thead>
+            <Tbody></Tbody>
+          </Table>
+
+          <FormLabel>Изображения товара</FormLabel>
           <Controller
             render={({ field: { onChange } }) => (
               <FileUpload
@@ -88,16 +146,18 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
                 accept="image/*"
                 maxSize={12582912}
                 onDrop={(acceptedFiles) => {
-                  setImage(acceptedFiles[0])
-                  onChange(acceptedFiles[0])
+                  setImages((files) => [...files, ...acceptedFiles])
+                  onChange(acceptedFiles)
                 }}
               />
             )}
             control={control}
-            name="image"
+            name="images"
           />
 
-          <Text>{image?.name}</Text>
+          {images.map((image) => (
+            <Text key={image.name}>{image.name}</Text>
+          ))}
 
           <Button
             colorScheme="blue"
@@ -107,7 +167,7 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             isLoading={isSubmitting}
             type="submit"
           >
-            Сохранить
+            Добавить
           </Button>
         </Stack>
       </form>
