@@ -12,20 +12,25 @@ import { ToastProvider } from 'providers/ToastProvider'
 import { ErrorBoundary } from 'components/ErrorBoundary'
 import 'styles/index.scss'
 import { seo } from 'resources/seo'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <>
     <DefaultSeo {...seo} />
-    <ChakraProvider>
-      <CSSReset />
-      <ToastProvider>
-        <ErrorBoundary>
-          <BaseLayout>
-            <Component {...pageProps} />
-          </BaseLayout>
-        </ErrorBoundary>
-      </ToastProvider>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <CSSReset />
+        <ToastProvider>
+          <ErrorBoundary>
+            <BaseLayout>
+              <Component {...pageProps} />
+            </BaseLayout>
+          </ErrorBoundary>
+        </ToastProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
   </>
 )
 

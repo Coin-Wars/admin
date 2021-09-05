@@ -1,21 +1,19 @@
-import { useAppDispatch } from 'store'
-import {
-  createProduct,
-  updateProduct,
-  getByStoreId,
-} from 'store/products/actions'
-import { ProductCreationData, ProductUpdateData } from 'services/models'
+import { useMutation, useQuery } from 'react-query'
+import * as productsApi from 'services/api/products'
+import { useStore } from './useStore'
 import { EntityId } from '@reduxjs/toolkit'
+import { ProductCreationData } from 'services/models'
 
 export const useProducts = () => {
-  const dispatch = useAppDispatch()
+  const { currentStore } = useStore()
 
   return {
-    createProduct: (data: ProductCreationData) =>
-      dispatch(createProduct(data)).unwrap(),
-    updateProduct: (data: ProductUpdateData) =>
-      dispatch(updateProduct(data)).unwrap(),
-    getByStoreId: (storeId: EntityId) =>
-      dispatch(getByStoreId(storeId)).unwrap(),
+    getProducts: () =>
+      useQuery('products', () =>
+        productsApi.getProductsByStoreId(currentStore.id as EntityId)
+      ),
+    createProduct: useMutation((data: ProductCreationData) =>
+      productsApi.createProduct({ ...data, store: currentStore.id as EntityId })
+    ),
   }
 }

@@ -18,8 +18,9 @@ import {
   Tr,
   Th,
   Td,
+  CloseButton,
 } from '@chakra-ui/react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useFieldArray } from 'react-hook-form'
 import { ProductCreationData } from 'services/models'
 import { FileUpload } from 'components/common/FileUpload'
 import { useProducts } from 'hooks/useProducts'
@@ -32,7 +33,9 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
   onSubmitCallback,
 }) => {
   const [images, setImages] = useState<File[]>([])
-  const { createProduct } = useProducts()
+  const { createProduct, getProducts } = useProducts()
+
+  const { refetch: refetchProducts } = getProducts()
 
   const {
     register,
@@ -40,9 +43,17 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
     control,
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<ProductCreationData>()
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control,
+      name: 'options',
+    }
+  )
 
   const onSubmit = async (data: ProductCreationData) => {
-    await createProduct(data)
+    console.log(data)
+    await createProduct.mutate(data)
+    await refetchProducts()
 
     if (onSubmitCallback) {
       onSubmitCallback()
@@ -58,6 +69,7 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             <Input
               id="name"
               {...register('name', {
+                required: 'Название обязательно',
                 minLength: {
                   value: 4,
                   message: 'Название должно содержать минимум 4 символа',
@@ -125,9 +137,11 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             </FormErrorMessage>
           </FormControl>
 
-          <Table variant="simple">
+          <Table size="sm">
             <TableCaption>
-              <Button>Добавить опцию</Button>
+              <Button onClick={() => append({ key: '', value: '' })}>
+                Добавить свойство
+              </Button>
             </TableCaption>
             <Thead>
               <Tr>
@@ -135,7 +149,36 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
                 <Th>Значение</Th>
               </Tr>
             </Thead>
-            <Tbody></Tbody>
+            <Tbody>
+              {fields.map((item, index) => (
+                <Tr key={item.id}>
+                  <Td>
+                    <Input
+                      {...register(`options.${index}.key` as const, {
+                        required: 'Свойство обязательно',
+                      })}
+                    />
+                  </Td>
+                  <Td>
+                    <Flex justifyContent="space-between">
+                      <Box w="100%">
+                        <Input
+                          {...register(`options.${index}.value` as const, {
+                            required: 'Свойство обязательно',
+                          })}
+                        />
+                      </Box>
+                      <CloseButton
+                        onClick={() => remove(index)}
+                        size="sm"
+                        my="auto"
+                        ml="1"
+                      />
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
           </Table>
 
           <FormLabel>Изображения товара</FormLabel>
@@ -147,10 +190,11 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
                 maxSize={12582912}
                 onDrop={(acceptedFiles) => {
                   setImages((files) => [...files, ...acceptedFiles])
-                  onChange(acceptedFiles)
+                  onChange([...images, ...acceptedFiles])
                 }}
               />
             )}
+            defaultValue={[]}
             control={control}
             name="images"
           />

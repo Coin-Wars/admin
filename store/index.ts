@@ -1,21 +1,12 @@
-import {
-  AnyAction,
-  combineReducers,
-  configureStore,
-  createAsyncThunk,
-  AsyncThunkPayloadCreator,
-  Dispatch,
-} from '@reduxjs/toolkit'
+import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import { reducer as userSliceReducer } from './user'
 import { reducer as storeSliceReducer } from './store'
-import { reducer as productsSliceReducer } from './products'
 import { useDispatch } from 'react-redux'
 
 const reducers = combineReducers({
   user: userSliceReducer,
   store: storeSliceReducer,
-  products: productsSliceReducer,
 })
 
 const rootReducer = (state: RootState, action: AnyAction) => {

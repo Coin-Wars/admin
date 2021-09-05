@@ -55,6 +55,7 @@ export interface Product {
 }
 
 export interface ProductImage {
+  id: EntityId
   image: string
 }
 
@@ -68,8 +69,9 @@ export interface ProductCreationData {
   description?: string
   is_shipping_required: boolean
   price: number
-  images?: ProductImage[]
-  options?: ProductOption[]
+  images: ProductImage[]
+  options: ProductOption[]
+  store: EntityId
 }
 
 export type ProductUpdateData = Object.Optional<

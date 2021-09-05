@@ -9,9 +9,19 @@ import { BiPlus } from 'react-icons/bi'
 import { ProductCard } from 'components/product/ProductCard'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { CreateProductModal } from 'components/modals/CreateProductModal'
+import { useStore } from '../hooks/useStore'
+import { useQuery } from 'react-query'
+import * as productsApi from 'services/api/products'
+import { EntityId } from '@reduxjs/toolkit'
 
 const Products: React.VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { currentStore } = useStore()
+
+  const products = useQuery('products', () =>
+    productsApi.getProductsByStoreId(currentStore.id as EntityId)
+  )
 
   return (
     <>
@@ -25,9 +35,13 @@ const Products: React.VFC = () => {
           </Button>
         </Flex>
         <Divider my="4" />
-        <VStack>
-          <ProductCard />
-        </VStack>
+        {products.data && (
+          <VStack>
+            {products.data.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </VStack>
+        )}
       </AuthorizedLayout>
     </>
   )
