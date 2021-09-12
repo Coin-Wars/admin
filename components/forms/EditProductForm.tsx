@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Button,
@@ -19,38 +19,70 @@ import {
   Th,
   Td,
   CloseButton,
+  HStack,
 } from '@chakra-ui/react'
 import { Controller, useForm, useFieldArray } from 'react-hook-form'
-import { ProductCreationData } from 'services/models'
+import { Product, ProductImage, ProductUpdateData } from 'services/models'
 import { FileUpload } from 'components/common/FileUpload'
 import { useProducts } from 'hooks/useProducts'
+import { EditProductImage } from 'components/product/EditProductImage'
+import { EntityId } from '@reduxjs/toolkit'
 
-interface CreateProductFormProps {
+interface EditProductFormProps {
   onSubmitCallback?: () => void
+  product: Product
 }
 
-export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
+export const EditProductForm: React.VFC<EditProductFormProps> = ({
   onSubmitCallback,
+  product,
 }) => {
   const [images, setImages] = useState<File[]>([])
-  const { createProduct, getProducts } = useProducts()
+  const [uploadedImages, setUploadedImages] = useState<ProductImage[]>([])
 
+  const {
+    updateProduct,
+    getProducts,
+    deleteProductImage,
+    deleteProductOption,
+  } = useProducts()
   const { refetch: refetchProducts } = getProducts()
+
+  const defaultValues = {
+    options: product.options,
+    name: product.name,
+    description: product.description,
+  } as ProductUpdateData
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting, touchedFields },
-  } = useForm<ProductCreationData>()
+  } = useForm<ProductUpdateData>({ defaultValues })
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'options',
   })
 
-  const onSubmit = async (data: ProductCreationData) => {
-    await createProduct.mutateAsync(data)
+  useEffect(() => {
+    setUploadedImages(product.images)
+  }, [product])
+
+  const onImageDelete = async (imageId: EntityId) => {
+    await deleteProductImage.mutateAsync({ imageId, productId: product.id })
+    setUploadedImages((images) =>
+      images.filter((image) => image.id !== imageId)
+    )
+  }
+
+  const onOptionDelete = async (optionId: EntityId) => {
+    await deleteProductOption.mutateAsync({ optionId, productId: product.id })
+  }
+
+  const onSubmit = async (data: ProductUpdateData) => {
+    await updateProduct.mutateAsync({ ...data, id: product.id })
     await refetchProducts()
 
     if (onSubmitCallback) {
@@ -167,7 +199,10 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
                         />
                       </Box>
                       <CloseButton
-                        onClick={() => remove(index)}
+                        onClick={() => {
+                          remove(index)
+                          onOptionDelete(item.id)
+                        }}
                         size="sm"
                         my="auto"
                         ml="1"
@@ -179,7 +214,21 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             </Tbody>
           </Table>
 
-          <FormLabel>Изображения товара</FormLabel>
+          <HStack spacing="10px">
+            {uploadedImages.map((image) => (
+              <Box
+                key={image.id}
+                w="100px"
+                h="100px"
+                overflow="hidden"
+                borderRadius="lg"
+              >
+                <EditProductImage image={image} onDelete={onImageDelete} />
+              </Box>
+            ))}
+          </HStack>
+
+          <FormLabel>Добавить изображения</FormLabel>
           <Controller
             render={({ field: { onChange } }) => (
               <FileUpload
@@ -209,7 +258,7 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             isLoading={isSubmitting}
             type="submit"
           >
-            Добавить
+            Сохранить
           </Button>
         </Stack>
       </form>

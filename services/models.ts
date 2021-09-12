@@ -52,6 +52,8 @@ export interface Product {
   options: ProductOption[]
   name: string
   description: string | null
+  is_shipping_required: boolean
+  price: number
 }
 
 export interface ProductImage {
@@ -74,6 +76,12 @@ export interface ProductCreationData {
   store: EntityId
 }
 
-export type ProductUpdateData = Object.Optional<
-  Object.Nullable<Omit<Product, 'store'>>
->
+export interface ProductUpdateData {
+  id: EntityId
+  name?: string
+  description?: string
+  is_shipping_required?: boolean
+  price?: number
+  images?: ProductImage[]
+  options: ProductOption[]
+}
