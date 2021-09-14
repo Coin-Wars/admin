@@ -1,10 +1,4 @@
-import {
-  LoginData,
-  RegisterData,
-  Tokens,
-  User,
-  UserUpdateData,
-} from 'services/models'
+import { LoginData, RegisterData, Tokens, User } from 'services/models'
 import { axios } from './index'
 
 export const register = (data: RegisterData) =>

@@ -9,25 +9,24 @@ import { BiPlus } from 'react-icons/bi'
 import { ProductCard } from 'components/product/ProductCard'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { CreateProductModal } from 'components/modals/CreateProductModal'
-import { useStore } from '../hooks/useStore'
-import { useQuery } from 'react-query'
-import * as productsApi from 'services/api/products'
-import { EntityId } from '@reduxjs/toolkit'
+import { useProducts } from 'hooks/useProducts'
 
 const Products: React.VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { getProducts } = useProducts()
 
-  const { currentStore } = useStore()
+  const products = getProducts()
 
-  const products = useQuery('products', () =>
-    productsApi.getProductsByStoreId(currentStore.id as EntityId)
-  )
+  const onModalClose = async () => {
+    onClose()
+    await products.refetch()
+  }
 
   return (
     <>
       <NextSeo title={routes.products.name} />
       <AuthorizedLayout>
-        <CreateProductModal isOpen={isOpen} onClose={onClose} />
+        <CreateProductModal isOpen={isOpen} onClose={onModalClose} />
         <Flex w="100%" justifyContent="space-between" alignItems="end">
           <Heading>Товары</Heading>
           <Button leftIcon={<BiPlus />} onClick={onOpen}>

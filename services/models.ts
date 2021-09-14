@@ -62,6 +62,7 @@ export interface ProductImage {
 }
 
 export interface ProductOption {
+  id: EntityId
   key: string
   value: string
 }

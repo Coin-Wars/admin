@@ -1,5 +1,16 @@
 import React from 'react'
-import { Box, Heading, Text, Flex, IconButton } from '@chakra-ui/react'
+import {
+  Box,
+  Heading,
+  Text,
+  Flex,
+  IconButton,
+  UnorderedList,
+  ListItem,
+  Divider,
+  Tag,
+  HStack,
+} from '@chakra-ui/react'
 import { Product } from 'services/models'
 import { Image } from 'components/common/Image'
 import Slider from 'react-slick'
@@ -35,7 +46,18 @@ export const ProductCard: React.VFC<ProductCardProps> = ({ product }) => {
         position="relative"
       >
         {Boolean(product.images.length) && (
-          <Box w="150px" h="150px" overflow="hidden" mr="6">
+          <Box
+            w="150px"
+            h="150px"
+            overflow="hidden"
+            mr="6"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            rounded={'lg'}
+            boxShadow={'lg'}
+            bg="gray.200"
+          >
             <Slider>
               {product.images.map((image) => (
                 <SlideWrapper key={image.id}>
@@ -45,15 +67,44 @@ export const ProductCard: React.VFC<ProductCardProps> = ({ product }) => {
             </Slider>
           </Box>
         )}
-        <Box>
-          <Heading size="md">{product.name}</Heading>
+
+        <Box w="100%">
+          <HStack
+            spacing={3}
+            alignItems="center"
+            justifyContent="start"
+            flexWrap="wrap"
+          >
+            <Heading size="md">{product.name}</Heading>
+            {product.price && <Heading size="sm">{product.price} руб.</Heading>}
+            {product.is_shipping_required && (
+              <Tag colorScheme="blue">Есть доставка</Tag>
+            )}
+          </HStack>
+          <Divider my={3} />
+          <Flex>
+            <Text>{product.description}</Text>
+            {Boolean(product.options.length) && (
+              <UnorderedList ml={10}>
+                {product.options.map((option) => (
+                  <ListItem key={option.id}>
+                    {option.key}: {option.value}
+                  </ListItem>
+                ))}
+              </UnorderedList>
+            )}
+          </Flex>
         </Box>
-        <Box>
-          <Text>{product.description}</Text>
-        </Box>
+
         <ProductPanelWrapper>
-          <IconButton aria-label="Edit" icon={<BiEditAlt />} onClick={onOpen} />
           <IconButton
+            size="sm"
+            aria-label="Edit"
+            icon={<BiEditAlt />}
+            onClick={onOpen}
+          />
+          <IconButton
+            size="sm"
             aria-label="Remove"
             icon={<BiX />}
             ml={2}
@@ -69,6 +120,7 @@ const SlideWrapper = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: auto;
 `
 
 const ImageWrapper = styled(Image)`
@@ -77,7 +129,7 @@ const ImageWrapper = styled(Image)`
 `
 
 const ProductPanelWrapper = styled(Flex)`
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   position: absolute;
 `

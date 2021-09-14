@@ -1,4 +1,3 @@
-import { EntityId } from '@reduxjs/toolkit'
 import { User, UserUpdateData } from 'services/models'
 import { axios } from './index'
 

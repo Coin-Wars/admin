@@ -31,12 +31,23 @@ export const getProductsByStoreId = (storeId: EntityId) =>
     .get<Product[]>('products/', { params: { store_id: storeId } })
     .then((res) => res.data)
 
-export const updateProduct = (data: ProductUpdateData) =>
-  axios
-    .patch<Product>(`products/${data.id}/`, objectToFormData(data), {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
+export const updateProduct = (data: ProductUpdateData) => {
+  const { images, options, ...rest } = data
+
+  return axios
+    .patch<Product>(
+      `products/${data.id}/`,
+      objectToFormData({
+        ...rest,
+        ...arrayToNumberedList(images || [], 'image'),
+        options: JSON.stringify(options),
+      }),
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    )
     .then((res) => res.data)
+}
 
 export const deleteProduct = (id: EntityId) =>
   axios.delete(`products/${id}/`).then((res) => res.data)
