@@ -98,7 +98,6 @@ export const CreateStoreForm: React.FC = () => {
                     accept="image/*"
                     maxSize={12582912}
                     onDrop={(acceptedFiles) => {
-                      console.log(acceptedFiles[0])
                       setLogo(acceptedFiles[0])
                       onChange(acceptedFiles[0])
                     }}

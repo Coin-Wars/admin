@@ -19,6 +19,7 @@ import { BiEditAlt, BiX } from 'react-icons/bi'
 import { useProducts } from 'hooks/useProducts'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { EditProductModal } from 'components/modals/EditProductModal'
+import currencyFormatter from 'currency-formatter'
 
 interface ProductCardProps {
   product: Product
@@ -76,7 +77,13 @@ export const ProductCard: React.VFC<ProductCardProps> = ({ product }) => {
             flexWrap="wrap"
           >
             <Heading size="md">{product.name}</Heading>
-            {product.price && <Heading size="sm">{product.price} руб.</Heading>}
+            {product.price && (
+              <Heading size="sm">
+                {currencyFormatter.format(product.price, {
+                  code: product.price_currency,
+                })}
+              </Heading>
+            )}
             {product.is_shipping_required && (
               <Tag colorScheme="blue">Есть доставка</Tag>
             )}

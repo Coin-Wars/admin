@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import {
   Td,
   CloseButton,
   HStack,
+  Select,
 } from '@chakra-ui/react'
 import { Controller, useForm, useFieldArray } from 'react-hook-form'
 import { Product, ProductImage, ProductUpdateData } from 'services/models'
@@ -27,6 +28,7 @@ import { FileUpload } from 'components/common/FileUpload'
 import { useProducts } from 'hooks/useProducts'
 import { EditProductImage } from 'components/product/EditProductImage'
 import { EntityId } from '@reduxjs/toolkit'
+import { currencies } from 'currency-formatter'
 
 interface EditProductFormProps {
   onSubmitCallback?: () => void
@@ -52,6 +54,9 @@ export const EditProductForm: React.VFC<EditProductFormProps> = ({
     options: product.options,
     name: product.name,
     description: product.description,
+    price: product.price,
+    price_currency: product.price_currency,
+    is_shipping_required: product.is_shipping_required,
   } as ProductUpdateData
 
   const {
@@ -89,6 +94,11 @@ export const EditProductForm: React.VFC<EditProductFormProps> = ({
       onSubmitCallback()
     }
   }
+
+  const currencyCodes = useMemo(
+    () => currencies.map((currency) => currency.code),
+    []
+  )
 
   return (
     <Box w="100%">
@@ -135,16 +145,40 @@ export const EditProductForm: React.VFC<EditProductFormProps> = ({
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            id="price"
-            isInvalid={errors.price && touchedFields.price}
-          >
-            <FormLabel>Цена</FormLabel>
-            <Input type="number" id="price" {...register('price')} />
-            <FormErrorMessage>
-              {errors.price && errors.price.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Flex>
+            <FormControl
+              id="price"
+              isInvalid={errors.price && touchedFields.price}
+            >
+              <FormLabel>Цена</FormLabel>
+              <Input type="number" id="price" {...register('price')} />
+            </FormControl>
+            <FormControl
+              w="150px"
+              id="price_currency"
+              ml={3}
+              isInvalid={errors.price_currency && touchedFields.price_currency}
+            >
+              <FormLabel>Валюта</FormLabel>
+              <Select
+                type="number"
+                id="price_currency"
+                defaultValue="RUB"
+                {...register('price_currency')}
+              >
+                {currencyCodes.map((code) => (
+                  <option key={code}>{code}</option>
+                ))}
+              </Select>
+            </FormControl>
+          </Flex>
+
+          <FormErrorMessage>
+            {errors.price && errors.price.message}
+          </FormErrorMessage>
+          <FormErrorMessage>
+            {errors.price_currency && errors.price_currency.message}
+          </FormErrorMessage>
 
           <FormControl
             id="is_shipping_required"

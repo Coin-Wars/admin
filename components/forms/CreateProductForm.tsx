@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   Box,
   Button,
@@ -19,11 +19,13 @@ import {
   Th,
   Td,
   CloseButton,
+  Select,
 } from '@chakra-ui/react'
 import { Controller, useForm, useFieldArray } from 'react-hook-form'
 import { ProductCreationData } from 'services/models'
 import { FileUpload } from 'components/common/FileUpload'
 import { useProducts } from 'hooks/useProducts'
+import { currencies } from 'currency-formatter'
 
 interface CreateProductFormProps {
   onSubmitCallback?: () => void
@@ -57,6 +59,11 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
       onSubmitCallback()
     }
   }
+
+  const currencyCodes = useMemo(
+    () => currencies.map((currency) => currency.code),
+    []
+  )
 
   return (
     <Box w="100%">
@@ -103,16 +110,40 @@ export const CreateProductForm: React.VFC<CreateProductFormProps> = ({
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            id="price"
-            isInvalid={errors.price && touchedFields.price}
-          >
-            <FormLabel>Цена</FormLabel>
-            <Input type="number" id="price" {...register('price')} />
-            <FormErrorMessage>
-              {errors.price && errors.price.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Flex>
+            <FormControl
+              id="price"
+              isInvalid={errors.price && touchedFields.price}
+            >
+              <FormLabel>Цена</FormLabel>
+              <Input type="number" id="price" {...register('price')} />
+            </FormControl>
+            <FormControl
+              w="150px"
+              id="price_currency"
+              ml={3}
+              isInvalid={errors.price_currency && touchedFields.price_currency}
+            >
+              <FormLabel>Валюта</FormLabel>
+              <Select
+                type="number"
+                id="price_currency"
+                defaultValue="RUB"
+                {...register('price_currency')}
+              >
+                {currencyCodes.map((code) => (
+                  <option key={code}>{code}</option>
+                ))}
+              </Select>
+            </FormControl>
+          </Flex>
+
+          <FormErrorMessage>
+            {errors.price && errors.price.message}
+          </FormErrorMessage>
+          <FormErrorMessage>
+            {errors.price_currency && errors.price_currency.message}
+          </FormErrorMessage>
 
           <FormControl
             id="is_shipping_required"

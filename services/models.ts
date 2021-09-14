@@ -54,6 +54,7 @@ export interface Product {
   description: string | null
   is_shipping_required: boolean
   price: number
+  price_currency: string
 }
 
 export interface ProductImage {
@@ -72,6 +73,7 @@ export interface ProductCreationData {
   description?: string
   is_shipping_required: boolean
   price: number
+  price_currency: string
   images: ProductImage[]
   options: ProductOption[]
   store: EntityId
@@ -83,6 +85,7 @@ export interface ProductUpdateData {
   description?: string
   is_shipping_required?: boolean
   price?: number
+  price_currency?: string
   images?: ProductImage[]
   options: ProductOption[]
 }
