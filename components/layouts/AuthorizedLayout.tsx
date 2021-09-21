@@ -3,6 +3,7 @@ import { Container, Box } from '@chakra-ui/react'
 import { Sidebar } from 'components/common/sidebar/Sidebar'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { InitialUserInfoModal } from 'components/modals/InitialUserInfoModal'
+import { AuthNavbar } from 'components/common/navbar/AuthNavbar'
 
 export const AuthorizedLayout: React.FC = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -16,6 +17,7 @@ export const AuthorizedLayout: React.FC = ({ children }) => {
 
   return (
     <>
+      <AuthNavbar />
       {isOpen && <InitialUserInfoModal isOpen={isOpen} onClose={onClose} />}
       <Box>
         <Sidebar />

@@ -21,3 +21,6 @@ export const update = (data: StoreUpdateData) =>
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((res) => res.data)
+
+export const getById = (storeId: EntityId) =>
+  axios.get<Store>(`stores/${storeId}/`).then((res) => res.data)

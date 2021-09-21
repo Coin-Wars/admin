@@ -6,7 +6,7 @@ import { withAuth } from 'hocs/withAuth'
 import { withStoreOwning } from 'hocs/withStoreOwning'
 import { Heading, Button, Flex, Divider, VStack } from '@chakra-ui/react'
 import { BiPlus } from 'react-icons/bi'
-import { ProductCard } from 'components/product/ProductCard'
+import { EditableProductCard } from 'components/product/EditableProductCard'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { CreateProductModal } from 'components/modals/CreateProductModal'
 import { useProducts } from 'hooks/useProducts'
@@ -37,7 +37,7 @@ const Products: React.VFC = () => {
         {products.data && (
           <VStack>
             {products.data.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <EditableProductCard key={product.id} product={product} />
             ))}
           </VStack>
         )}

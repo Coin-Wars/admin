@@ -31,6 +31,7 @@ export interface UserUpdateData extends Object.Optional<Object.Nullable<User>> {
 export interface Store {
   id: EntityId
   seller: User
+  products: Product[]
   name: string
   description: string
   logo: string | null
@@ -43,7 +44,9 @@ export interface StoreCreationData {
 }
 
 export interface StoreUpdateData
-  extends Object.Optional<Object.Nullable<Omit<Store, 'seller'>>> {}
+  extends Object.Optional<
+    Object.Nullable<Omit<Store, 'seller' | 'products'>>
+  > {}
 
 export interface Product {
   id: EntityId

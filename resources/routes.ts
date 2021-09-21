@@ -31,4 +31,8 @@ export const routes = {
     name: 'Товары',
     path: '/products',
   },
+  store: {
+    name: '%s - Магазин',
+    path: '/stores/%d',
+  },
 }
