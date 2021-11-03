@@ -16,7 +16,7 @@ export const createProduct = (data: ProductCreationData) => {
       'products/',
       objectToFormData({
         ...rest,
-        ...arrayToNumberedList(images, 'image'),
+        ...(arrayToNumberedList(images, 'image') || []),
         options: JSON.stringify(options),
       }),
       {

@@ -5,7 +5,7 @@ import Slider from 'react-slick'
 import { Image } from 'components/common/Image'
 import currencyFormatter from 'currency-formatter'
 import styled from 'styled-components'
-import NoImage from 'public/images/no-image.png'
+import NoImage from 'public/images/no-product-image.png'
 
 interface ProductCardProps {
   product: Product
@@ -18,6 +18,8 @@ export const ProductCard: React.VFC<ProductCardProps> = ({ product }) => {
     [product]
   )
 
+  console.log(images)
+
   return (
     <Box
       w="200px"
@@ -26,7 +28,7 @@ export const ProductCard: React.VFC<ProductCardProps> = ({ product }) => {
       bg="white"
       overflow="hidden"
     >
-      {Boolean(product.images.length) && (
+      {Boolean(images.length) && (
         <Box height="170px" w="100%" bg="gray.200">
           <Slider>
             {images.map((image) => (

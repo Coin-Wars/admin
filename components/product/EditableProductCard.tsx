@@ -20,7 +20,7 @@ import { useProducts } from 'hooks/useProducts'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { EditProductModal } from 'components/modals/EditProductModal'
 import currencyFormatter from 'currency-formatter'
-import NoImage from 'public/images/no-image.png'
+import NoImage from 'public/images/no-product-image.png'
 
 interface ProductCardProps {
   product: Product
@@ -55,7 +55,7 @@ export const EditableProductCard: React.VFC<ProductCardProps> = ({
         p="6"
         position="relative"
       >
-        {Boolean(product.images.length) && (
+        {Boolean(images.length) && (
           <Box
             w="150px"
             h="150px"
