@@ -35,7 +35,7 @@ const Store: React.VFC = () => {
         <Divider />
         {productsQuery.data ? (
           Boolean(productsQuery.data.length) && (
-            <HStack mt={8} spacing="16px">
+            <HStack mt={8} spacing="16px" wrap="wrap">
               {productsQuery.data.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

@@ -31,6 +31,9 @@ export const getProductsByStoreId = (storeId: EntityId) =>
     .get<Product[]>('products/', { params: { store_id: storeId } })
     .then((res) => res.data)
 
+export const getProductById = (id: EntityId) =>
+  axios.get<Product>(`products/${id}/`).then((res) => res.data)
+
 export const updateProduct = (data: ProductUpdateData) => {
   const { images, options, ...rest } = data
 

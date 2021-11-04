@@ -26,6 +26,8 @@ export const useProducts = () => {
       useQuery('productsByStoreId', () =>
         productsApi.getProductsByStoreId(storeId)
       ),
+    getProductById: (id: number) =>
+      useQuery('productById', () => productsApi.getProductById(id)),
     createProduct: useMutation((data: ProductCreationData) =>
       productsApi.createProduct({ ...data, store: currentStore.id as EntityId })
     ),

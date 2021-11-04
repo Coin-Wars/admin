@@ -27,7 +27,7 @@ const Panel: React.VFC = () => {
             )}
             <Heading display="inline-block">{currentStore.name}</Heading>
             {currentStore.description && (
-              <Text>{currentStore.description}</Text>
+              <Text mt={4}>{currentStore.description}</Text>
             )}
           </Box>
         )}
